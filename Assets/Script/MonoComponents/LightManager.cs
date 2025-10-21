@@ -5,10 +5,12 @@ using UnityEngine;
 [ExecuteAlways]
 public class LightManager : MonoBehaviour
 {
-    public Material DarknessMaterial;
-    public Color AmbientColor = new Color(0.1f, 0.1f, 0.15f, 1f);
+    public Material darknessMaterial, fogMaterial;
+    public Color ambientColor = new Color(0.1f, 0.1f, 0.15f, 1f);
+    public Color fogColor = new Color(0.1f, 0.1f, 0.15f, 1f);
     public int baseResolution = 512;
     public Camera lightCam;
+
     private RenderTexture LightTexture;
 
     [Range(0f, 1f)]
@@ -18,10 +20,14 @@ public class LightManager : MonoBehaviour
     {
         CheckLightTexture();
 
-        if (DarknessMaterial != null && LightTexture != null)
+        if (darknessMaterial != null && LightTexture != null)
         {
-            DarknessMaterial.SetTexture("_LightTex", LightTexture);
-            DarknessMaterial.SetColor("_DarkColor", AmbientColor * lightIntensity);
+            darknessMaterial.SetTexture("_LightTex", LightTexture);
+            darknessMaterial.SetColor("_DarkColor", ambientColor * lightIntensity);
+        }
+        if (fogMaterial != null)
+        {
+            fogMaterial.SetColor("_Color", fogColor);
         }
     }
 
