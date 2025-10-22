@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShadowMaskFollow : MonoBehaviour
+[ExecuteAlways]
+public class MaskFollowCamera : MonoBehaviour
 {
     public Camera targetCamera;
     public float distance = 0.5f;
