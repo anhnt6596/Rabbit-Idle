@@ -1,6 +1,7 @@
 ﻿// Editor/CreateTexture2DArray.cs (phiên bản robust)
 using UnityEngine;
 using UnityEditor;
+using System.Linq;
 
 public class CreateTexture2DArray
 {
@@ -10,9 +11,15 @@ public class CreateTexture2DArray
         var texs = Selection.GetFiltered<Texture2D>(SelectionMode.Assets);
         if (texs.Length == 0) { Debug.LogError("Select textures first."); return; }
 
+        // sap xep truoc da
+        texs = texs
+            .OrderBy(tex => tex.name)
+            .ToArray();
+
         // Chọn kích thước chuẩn theo texture đầu tiên
         int w = texs[0].width, h = texs[0].height;
         bool genMips = true;
+
 
         // Tạo Texture2DArray RGBA32 (sRGB), có mip
         var arr = new Texture2DArray(w, h, texs.Length, TextureFormat.RGBA32, genMips, false);
@@ -25,9 +32,8 @@ public class CreateTexture2DArray
             // Đảm bảo Read/Write để GetPixels32 hoạt động
             var path = AssetDatabase.GetAssetPath(src);
             var imp = (TextureImporter)AssetImporter.GetAtPath(path);
-            if (!imp.isReadable || imp.textureType != TextureImporterType.Default)
+            if (!imp.isReadable)
             {
-                imp.textureType = TextureImporterType.Default;
                 imp.isReadable = true;
                 imp.SaveAndReimport();
             }

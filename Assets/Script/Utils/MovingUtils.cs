@@ -15,7 +15,7 @@ public static class MovingUtils
     {
         dir.y = 0f;
 
-        if (dir.sqrMagnitude < 0.0001f)
+        if (dir.sqrMagnitude < 0.000001f)
             return Dir4.Unknown;
 
         GetCameraBasisXZ(cam, out var fwdXZ, out var rightXZ);
